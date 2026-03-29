@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }}{% endblock title %}
+
+{% block content %}
+
+<div class="detail-box">
+    <div>
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <img src="https://via.placeholder.com/500x420?text=No+Image" alt="No image">
+        {% endif %}
+    </div>
+
+    <div class="detail-content">
+        <h2>{{ product.name }}</h2>
+        <p><strong>Kategoriya:</strong> {{ product.category.name }}</p>
+        <div class="price">${{ product.price }}</div>
+        <p>{{ product.description }}</p>
+
+        <br>
+        <a href="{% url 'cart' %}" class="btn">Savatchaga qo‘shish</a>
+        <a href="{% url 'index' %}" class="btn btn-danger">Orqaga</a>
+    </div>
+</div>
+
+{% endblock content %}

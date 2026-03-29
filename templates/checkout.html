@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Buyurtma berish{% endblock title %}
+
+{% block content %}
+
+<div class="form-box">
+    <h2>Buyurtma berish</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Ism</label>
+            <input type="text" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Telefon raqam</label>
+            <input type="text" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label>Manzil</label>
+            <textarea name="address" rows="4" required></textarea>
+        </div>
+
+        <button type="submit" class="btn">Tasdiqlash</button>
+    </form>
+</div>
+
+{% endblock content %}  

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Bosh sahifa{% endblock title %}
+
+{% block hero %}
+<section class="hero">
+    <div class="container">
+        <h1>Internet Do'konimizga xush kelibsiz</h1>
+        <p>
+            Bu sahifada barcha kategoriyalar va barcha mahsulotlar chiqadi.
+            O'zingizga kerakli mahsulotni tanlang va batafsil ko'ring.
+        </p>
+    </div>
+</section>
+{% endblock hero %}
+
+{% block content %}
+
+<h2 class="section-title">Kategoriyalar</h2>
+
+<div class="categories">
+    {% for category in categories %}
+        <a href="{% url 'category_products' category.id %}">
+            <div class="category-card">
+                <h3>{{ category.name }}</h3>
+                <p>Mahsulotlarni ko‘rish</p>
+            </div>
+        </a>
+    {% empty %}
+        <p class="empty-text">Hozircha kategoriya yo‘q.</p>
+    {% endfor %}
+</div>
+
+<h2 class="section-title">Barcha mahsulotlar</h2>
+
+<div class="products">
+    {% for product in products %}
+        <div class="product-card">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="https://via.placeholder.com/300x230?text=No+Image" alt="No image">
+            {% endif %}
+
+            <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description|truncatewords:12 }}</p>
+                <p><strong>Kategoriya:</strong> {{ product.category.name }}</p>
+                <div class="price">${{ product.price }}</div>
+                <a href="{% url 'product_detail' product.id %}" class="btn">Batafsil</a>
+            </div>
+        </div>
+    {% empty %}
+        <p class="empty-text">Hozircha mahsulot yo‘q.</p>
+    {% endfor %}
+</div>
+
+{% endblock content %}  

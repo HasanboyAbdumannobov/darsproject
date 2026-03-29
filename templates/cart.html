@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Savatcha{% endblock title %}
+
+{% block content %}
+
+<h2 class="section-title">Savatcha</h2>
+
+<table class="cart-table">
+    <thead>
+        <tr>
+            <th>Mahsulot</th>
+            <th>Narxi</th>
+            <th>Soni</th>
+            <th>Jami</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>${{ item.product.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.total_price }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Savatcha bo‘sh</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Umumiy summa: ${{ total_price }}</h3>
+<br>
+<a href="{% url 'checkout' %}" class="btn">Buyurtma berish</a>
+
+{% endblock content %}

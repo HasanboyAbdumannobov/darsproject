@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Kategoriya mahsulotlari{% endblock title %}
+
+{% block content %}
+
+<h2 class="section-title">{{ category.name }} kategoriyasidagi mahsulotlar</h2>
+
+<div class="products">
+    {% for product in products %}
+        <div class="product-card">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="https://via.placeholder.com/300x230?text=No+Image" alt="No image">
+            {% endif %}
+
+            <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description|truncatewords:12 }}</p>
+                <div class="price">${{ product.price }}</div>
+                <a href="{% url 'product_detail' product.id %}" class="btn">Batafsil</a>
+            </div>
+        </div>
+    {% empty %}
+        <p class="empty-text">Bu kategoriyada mahsulot yo‘q.</p>
+    {% endfor %}
+</div>
+
+{% endblock content %}
