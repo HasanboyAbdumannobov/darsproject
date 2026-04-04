@@ -1,38 +1,72 @@
-{% extends 'base.html' %}
-
-{% block title %}Savatcha{% endblock title %}
+{% extends 'shop/base.html' %}
 
 {% block content %}
+<section class="subhero-section compact-subhero">
+    <div class="container subhero-wrap">
+        <div>
+            <span class="section-badge">Savatcha</span>
+            <h1>Savatchadagi mahsulotlar</h1>
+            <p>Tanlangan telefon va aksessuarlaringiz shu yerda turadi.</p>
+        </div>
+        <a href="{% url 'home' %}" class="ghost-btn">Yana mahsulot qo'shish</a>
+    </div>
+</section>
 
-<h2 class="section-title">Savatcha</h2>
+<section class="container section-space-small">
+{% if items %}
+    <div class="cart-layout">
+        <div class="cart-items-card">
+            {% for item in items %}
+                <div class="cart-row">
+                    <div class="cart-product-info">
+                        <div class="cart-thumb dark-box">
+                            {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                            {% else %}
+                                <div class="img-placeholder">Rasm</div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <span class="small-tag">{{ item.product.category.name }}</span>
+                            <h3>{{ item.product.name }}</h3>
+                            <p class="muted-text">1 dona narxi: ${{ item.product.price }}</p>
+                            <p class="muted-text">Soni: {{ item.quantity }}</p>
+                        </div>
+                    </div>
 
-<table class="cart-table">
-    <thead>
-        <tr>
-            <th>Mahsulot</th>
-            <th>Narxi</th>
-            <th>Soni</th>
-            <th>Jami</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in cart_items %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>${{ item.product.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>${{ item.total_price }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">Savatcha bo‘sh</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                    <div class="cart-actions-box">
+                        <strong class="price-text">${{ item.subtotal }}</strong>
+                        <div class="mini-actions stretch-mobile">
+                            <a href="{% url 'decrease_cart_item' item.product.id %}" class="ghost-btn">-1</a>
+                            <form method="post" action="{% url 'add_to_cart' item.product.id %}" class="stretch-mobile">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="secondary-btn btn-reset full-mobile">+1</button>
+                            </form>
+                            <a href="{% url 'remove_from_cart' item.product.id %}" class="danger-btn">O'chirish</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-<h3>Umumiy summa: ${{ total_price }}</h3>
-<br>
-<a href="{% url 'checkout' %}" class="btn">Buyurtma berish</a>
-
-{% endblock content %}
+        <div class="cart-summary-card">
+            <span class="section-badge light-badge">Jami</span>
+            <h3>Buyurtma xulosasi</h3>
+            <p class="cart-total-price">${{ total_price }}</p>
+            <div class="summary-lines">
+                <div><span>Mahsulotlar soni</span><strong>{{ cart_count }}</strong></div>
+                <div><span>Yetkazib berish</span><strong>Kelishiladi</strong></div>
+            </div>
+            <a href="{% url 'home' %}" class="primary-btn cart-full-btn">Davom etish</a>
+        </div>
+    </div>
+{% else %}
+    <div class="empty-box empty-center">
+        <h3>Savatcha bo'sh</h3>
+        <p>Telefon yoki aksessuar tanlab, savatchaga qo'shib ko'ring.</p>
+        <a href="{% url 'home' %}" class="primary-btn">Mahsulotlarni ochish</a>
+    </div>
+{% endif %}
+</section>
+{% endblock %}
